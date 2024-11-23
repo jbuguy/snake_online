@@ -42,7 +42,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'test.App'
+    mainClass = 'snake.App'
 }
 
 tasks.named('test') {
