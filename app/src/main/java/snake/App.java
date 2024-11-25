@@ -19,6 +19,7 @@ public class App {
 	private long window;
 
 	public void run() {
+		System.out.println("hello world");
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 		
 		init();
