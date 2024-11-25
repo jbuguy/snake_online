@@ -9,6 +9,9 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
 }
+ext{
+    lwjglVersion = '3.3.4'
+}
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -16,14 +19,11 @@ repositories {
 }
 
 dependencies {
-        implementation "org.lwjgl:lwjgl:3.3.1"          // Core LWJGL library
-    implementation "org.lwjgl:lwjgl-glfw:3.3.1"    // GLFW for windowing
-    implementation "org.lwjgl:lwjgl-opengl:3.3.1"  // OpenGL bindings
-
-    // Add native libraries for your platform
-    runtimeOnly "org.lwjgl:lwjgl::natives-linux"
-    runtimeOnly "org.lwjgl:lwjgl-glfw::natives-linux"
-    runtimeOnly "org.lwjgl:lwjgl-opengl::natives-linux"
+    implementation "org.lwjgl:lwjgl:$lwjglVersion"          // Core LWJGL library
+    implementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"    // GLFW for windowing
+    implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion"  // OpenGL bindings
+    implementation "org.lwjgl:lwjgl-platform:$lwjglVersion" 
+    implementation "org.lwjgl:lwjgl-stb:$lwjglVersion" 
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
 
