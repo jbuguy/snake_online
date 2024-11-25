@@ -11,6 +11,7 @@ plugins {
 }
 ext{
     lwjglVersion = '3.3.4'
+    lwjglPlatform="natives-linux"
 }
 
 repositories {
@@ -22,8 +23,12 @@ dependencies {
     implementation "org.lwjgl:lwjgl:$lwjglVersion"          // Core LWJGL library
     implementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"    // GLFW for windowing
     implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion"  // OpenGL bindings
-    implementation "org.lwjgl:lwjgl-platform:$lwjglVersion" 
     implementation "org.lwjgl:lwjgl-stb:$lwjglVersion" 
+    // natives
+    runtimeOnly "org.lwjgl:lwjgl::$lwjglPlatform"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglPlatform"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglPlatform"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglPlatform"
     // Use JUnit Jupiter for testing.
     testImplementation libs.junit.jupiter
 
