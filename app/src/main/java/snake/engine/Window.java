@@ -1,5 +1,6 @@
 package snake.engine;
 
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_MAXIMIZED;
 import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
@@ -7,7 +8,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
 import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
-import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
@@ -32,16 +32,39 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
+import snake.util.Time;
+
 public class Window {
     private static Window instance = null;
     private int width, heigth;
     private String title;
     private long glfwWindow;
+    private static Scene currentScene;
+    float r, g, b, a;
+
+    public static void changeScene(int scene) {
+        switch (scene) {
+            case 0:
+                currentScene = new LevelEditorScene();
+                // currentScene.init()
+                break;
+            case 1:
+                currentScene = new LevelScene();
+                break;
+            default:
+                assert false : "Unkown scene" + scene + "!";
+                break;
+        }
+    }
 
     private Window() {
         this.width = 1600;
         this.heigth = 900;
         this.title = "online snake";
+        this.a = 1.0f;
+        this.b = 1.0f;
+        this.g = 1.0f;
+        this.r = 1.0f;
     }
 
     public static Window get() {
@@ -65,19 +88,24 @@ public class Window {
             tmp.free();
 
         }
-
     }
 
     public void loop() {
+        float beginTime = Time.getTime();
+        float lastTime = Time.getTime();
+        float dt = -1;
+
         while (!glfwWindowShouldClose(glfwWindow)) {
             glfwPollEvents();
-            glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+            glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);
-
-            if(MouseListener.isDragging()){
-                System.out.println("mouse btn is pressed");
+            if (dt>0) {
+                currentScene.update(dt);
             }
             glfwSwapBuffers(glfwWindow);
+            lastTime = Time.getTime();
+            dt = lastTime - beginTime;
+            beginTime = lastTime;
         }
     }
 
@@ -104,7 +132,7 @@ public class Window {
         glfwSwapInterval(1);
         glfwShowWindow(glfwWindow);
         GL.createCapabilities();
-
+        Window.changeScene(0);
     }
 
 }
