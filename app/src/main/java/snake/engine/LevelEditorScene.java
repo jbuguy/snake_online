@@ -9,11 +9,13 @@ public class LevelEditorScene extends Scene {
     public LevelEditorScene() {
         super();
         System.out.println("inside level editor scene");
+        Window.get().r=1.0f;
+        Window.get().b=1.0f;
+        Window.get().g=1.0f;
     }
 
     @Override
     public void update(float dt) {
-        System.out.println("fps:"+1/dt);
         if (!changingScene && KeyListener.isKeyPressed(KeyEvent.VK_SPACE)) {
             changingScene = true;
         }
