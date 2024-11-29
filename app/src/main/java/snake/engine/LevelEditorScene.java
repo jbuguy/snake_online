@@ -1,16 +1,16 @@
 package snake.engine;
 
-import static org.lwjgl.opengl.GL20.GL_FALSE;
-import static org.lwjgl.opengl.GL20.GL_FLOAT;
-import static org.lwjgl.opengl.GL20.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL20.GL_UNSIGNED_INT;
-import static org.lwjgl.opengl.GL20.glDrawElements;
-import static org.lwjgl.opengl.GL20.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL20.GL_ELEMENT_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL20.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL20.glBindBuffer;
-import static org.lwjgl.opengl.GL20.glBufferData;
-import static org.lwjgl.opengl.GL20.glGenBuffers;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_INFO_LOG_LENGTH;
@@ -30,8 +30,8 @@ import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30C.glBindVertexArray;
-import static org.lwjgl.opengl.GL30C.glGenVertexArrays;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
