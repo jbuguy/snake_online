@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 import static org.lwjgl.opengl.GL20.glGetShaderi;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 
 import java.io.IOException;
 import java.nio.file.Files;
