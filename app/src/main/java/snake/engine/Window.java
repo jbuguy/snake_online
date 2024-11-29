@@ -46,10 +46,11 @@ public class Window {
         switch (scene) {
             case 0:
                 currentScene = new LevelEditorScene();
-                // currentScene.init()
+                currentScene.init();
                 break;
-            case 1:
+                case 1:
                 currentScene = new LevelScene();
+                currentScene.init();
                 break;
             default:
                 assert false : "Unkown scene" + scene + "!";
@@ -99,7 +100,7 @@ public class Window {
             glfwPollEvents();
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);
-            if (dt>0) {
+            if (dt > 0) {
                 currentScene.update(dt);
             }
             glfwSwapBuffers(glfwWindow);

@@ -14,18 +14,21 @@ public class KeyListener {
     public static void keyCallBack(long window, int key, int scancode, int action, int mods) {
         if (action == GLFW_PRESS) {
             get().keyPressed[key] = true;
-        }else if(action ==GLFW_RELEASE){
-            get().keyPressed[key]=false;
+        } else if (action == GLFW_RELEASE) {
+            get().keyPressed[key] = false;
         }
     }
-    public static boolean isKeyPressed(int keyCode){
-        if (keyCode<get().keyPressed.length) {
+
+    public static boolean isKeyPressed(int keyCode) {
+        if (keyCode < get().keyPressed.length) {
             return get().keyPressed[keyCode];
-        }return false;
+        }
+        return false;
     }
+
     private static KeyListener get() {
-        if (KeyListener.instance==null) {
-            KeyListener.instance=new KeyListener();
+        if (KeyListener.instance == null) {
+            KeyListener.instance = new KeyListener();
         }
         return KeyListener.instance;
     }

@@ -56,7 +56,7 @@ public class MouseListener {
         get().scrollY = 0;
         get().lastX = get().xPos;
         get().lastY = get().yPos;
-        get().dragging=get().mouseBtnPressed[0]||get().mouseBtnPressed[1]||get().mouseBtnPressed[2];
+        get().dragging = get().mouseBtnPressed[0] || get().mouseBtnPressed[1] || get().mouseBtnPressed[2];
     }
 
     public static float getX() {
