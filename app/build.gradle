@@ -24,6 +24,7 @@ dependencies {
     implementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"    // GLFW for windowing
     implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion"  // OpenGL bindings
     implementation "org.lwjgl:lwjgl-stb:$lwjglVersion" 
+    implementation 'org.joml:joml:1.9.2'
     // natives
     runtimeOnly "org.lwjgl:lwjgl::$lwjglPlatform"
     runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglPlatform"

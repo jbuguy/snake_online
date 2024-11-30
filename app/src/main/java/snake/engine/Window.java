@@ -36,11 +36,7 @@ import snake.util.Time;
 
 public class Window {
     private static Window instance = null;
-    private int width, heigth;
-    private String title;
-    private long glfwWindow;
     private static Scene currentScene;
-    float r, g, b, a;
 
     public static void changeScene(int scene) {
         switch (scene) {
@@ -48,7 +44,7 @@ public class Window {
                 currentScene = new LevelEditorScene();
                 currentScene.init();
                 break;
-                case 1:
+            case 1:
                 currentScene = new LevelScene();
                 currentScene.init();
                 break;
@@ -58,6 +54,20 @@ public class Window {
         }
     }
 
+    public static Window get() {
+        if (Window.instance == null) {
+            Window.instance = new Window();
+        }
+        return Window.instance;
+    }
+
+    private int width, heigth;
+    private String title;
+
+    private long glfwWindow;
+
+    float r, g, b, a;
+
     private Window() {
         this.width = 1600;
         this.heigth = 900;
@@ -66,13 +76,6 @@ public class Window {
         this.b = 1.0f;
         this.g = 1.0f;
         this.r = 1.0f;
-    }
-
-    public static Window get() {
-        if (Window.instance == null) {
-            Window.instance = new Window();
-        }
-        return Window.instance;
     }
 
     public void run() {

@@ -14,13 +14,19 @@ import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
 import static org.lwjgl.opengl.GL20.glGetProgrami;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
 
 public class Shader {
     private int shaderProgramID;
@@ -100,7 +106,12 @@ public class Shader {
             assert false : "";
         }
     }
-
+    public void uploadMat4f(String varName,Matrix4f matrix4f ){
+        int varlocation=glGetUniformLocation(shaderProgramID, varName);
+        FloatBuffer matBuffer=BufferUtils.createFloatBuffer(16);
+        matrix4f.get(matBuffer);
+        glUniformMatrix4fv(varlocation, false, matBuffer);
+    }
     public void use() {
         glUseProgram(shaderProgramID);
 
