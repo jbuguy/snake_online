@@ -27,10 +27,11 @@ import org.lwjgl.BufferUtils;
 import snake.renderer.Shader;
 import snake.util.Time;
 
-public class LevelEditorScene extends Scene {
+public class LevelEditorScene implements IScene {
     private int vaoId, vboId, eboId;
     private Shader defaultShader;
     private Texture texture;
+    private Camera camera;
     private float[] vertexArray = {
             // position:3 //color:4 //texture cord:2
             100.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1, 1, // buttom tight

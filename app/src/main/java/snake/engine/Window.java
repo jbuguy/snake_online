@@ -36,7 +36,7 @@ import snake.util.Time;
 
 public class Window {
     private static Window instance = null;
-    private static Scene currentScene;
+    private static IScene currentScene;
 
     public static void changeScene(int scene) {
         switch (scene) {
