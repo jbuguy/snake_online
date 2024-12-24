@@ -1,7 +1,6 @@
 package snake.engine;
 
-public class LevelScene implements IScene {
-    private Camera camera;
+public class LevelScene extends Scene {
     public LevelScene() {
 
     }

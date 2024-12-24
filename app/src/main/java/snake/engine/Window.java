@@ -36,22 +36,22 @@ import snake.util.Time;
 
 public class Window {
     private static Window instance = null;
-    private static IScene currentScene;
+    private static Scene currentScene;
 
     public static void changeScene(int scene) {
         switch (scene) {
             case 0:
                 currentScene = new LevelEditorScene();
-                currentScene.init();
                 break;
             case 1:
                 currentScene = new LevelScene();
-                currentScene.init();
                 break;
             default:
                 assert false : "Unkown scene" + scene + "!";
                 break;
         }
+        currentScene.init();
+        currentScene.start();
     }
 
     public static Window get() {

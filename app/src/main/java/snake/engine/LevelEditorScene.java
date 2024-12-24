@@ -24,10 +24,11 @@ import java.nio.IntBuffer;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 
+import snake.components.SpriteRenderer;
 import snake.renderer.Shader;
 import snake.util.Time;
 
-public class LevelEditorScene implements IScene {
+public class LevelEditorScene extends Scene {
     private int vaoId, vboId, eboId;
     private Shader defaultShader;
     private Texture texture;
@@ -44,6 +45,7 @@ public class LevelEditorScene implements IScene {
             2, 1, 0, // top right triangle
             0, 1, 3 // buttom left triangle
     };
+    private GameObject testObj;
 
     public LevelEditorScene() {
         super();
@@ -51,10 +53,14 @@ public class LevelEditorScene implements IScene {
 
     @Override
     public void init() {
+        this.testObj = new GameObject("test Object");
+        this.testObj.addComponent(new SpriteRenderer());
+        this.addGameObjectToScene(this.testObj);
+
         this.camera = new Camera(new Vector2f());
         defaultShader = new Shader("./app/assets/default.glsl");
         defaultShader.compile();
-        this.texture=new Texture("app/assets/mario.jpg");
+        this.texture = new Texture("app/assets/mario.jpg");
         // init vbo and vao
         vaoId = glGenVertexArrays();
         glBindVertexArray(vaoId);
@@ -88,10 +94,9 @@ public class LevelEditorScene implements IScene {
     @Override
     public void update(float dt) {
 
-
         defaultShader.use();
         defaultShader.uploadTexture("TEX_SAMPLER", 0);
-        glActiveTexture(GL_TEXTURE0 );
+        glActiveTexture(GL_TEXTURE0);
         texture.bind();
         // camera
         defaultShader.uploadMat4f("uProjection", camera.getProjectonMatrix());
@@ -110,6 +115,8 @@ public class LevelEditorScene implements IScene {
         glDisableVertexAttribArray(2);
         glBindVertexArray(0);
         defaultShader.detach();
+
+        this.gameObjects.forEach(go -> go.update(dt));
     }
 
 }
