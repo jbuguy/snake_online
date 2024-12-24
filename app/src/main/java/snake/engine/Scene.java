@@ -3,8 +3,11 @@ package snake.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import snake.renderer.Renderer;
+
 public abstract class Scene {
     protected Camera camera;
+    protected Renderer renderer=new Renderer();
     private boolean isRunning = false;
     protected List<GameObject> gameObjects = new ArrayList<>();
 
@@ -13,16 +16,22 @@ public abstract class Scene {
     public abstract void update(float dt);
 
     public void start() {
-        if (!isRunning) {
-            gameObjects.forEach(GameObject::start);
+        for (GameObject gameObject : gameObjects) {
+                gameObject.start();
+                renderer.add(gameObject);
         }
-        isRunning=true;
+        isRunning = true;
     };
 
     public void addGameObjectToScene(GameObject gameObject) {
         gameObjects.add(gameObject);
         if (isRunning) {
             gameObject.start();
+            this.renderer.add(gameObject);
         }
     };
+
+    public Camera getCamera() {
+        return this.camera;
+    }
 }

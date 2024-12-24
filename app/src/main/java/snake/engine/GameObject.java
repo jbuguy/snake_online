@@ -6,11 +6,23 @@ import java.util.List;
 public class GameObject {
     private String name;
     private List<Component> components;
+    public Transform transform;
 
     public GameObject(String name) {
         this.name = name;
-        this.components=new ArrayList<>();
+        this.components = new ArrayList<>();
+        this.transform=new Transform();
+        
+    }
+    public GameObject(String name,Transform transform) {
+        this.name = name;
+        this.components = new ArrayList<>();
+        this.transform=transform;
 
+    }
+
+    public String getName() {
+        return name;
     }
 
     public <T extends Component> T getComponent(Class<T> componentClass) {
@@ -38,14 +50,18 @@ public class GameObject {
             }
         }
     }
-    public void addComponent(Component component){
+
+    public void addComponent(Component component) {
         this.components.add(component);
-        component.GameObject=this;
+        component.GameObject = this;
     }
-    public void update(float dt){
+
+    public void update(float dt) {
         components.forEach(c -> c.update(dt));
     }
-    public void start(){
+
+    public void start() {
         components.forEach(Component::start);
     }
+
 }

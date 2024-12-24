@@ -1,4 +1,4 @@
-package snake.engine;
+package snake.renderer;
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;

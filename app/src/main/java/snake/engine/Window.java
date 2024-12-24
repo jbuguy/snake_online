@@ -138,5 +138,7 @@ public class Window {
         GL.createCapabilities();
         Window.changeScene(0);
     }
-
+    public static Scene getScene(){
+        return currentScene;
+    }
 }
