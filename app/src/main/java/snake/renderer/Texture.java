@@ -25,6 +25,14 @@ import org.lwjgl.BufferUtils;
 public class Texture {
     private String filepath;
     private int textureID;
+    private int width,height;
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 
     public Texture(String filepath) {
         this.filepath = filepath;
@@ -43,7 +51,8 @@ public class Texture {
         ByteBuffer image = stbi_load(filepath, width, height, channels, 0);
         if (image != null) {
             int format = GL_RGBA; 
-
+            this.width=width.get(0);
+            this.height=height.get(0);
             if (channels.get(0) == 3) {
                 format = GL_RGB;             }
             glTexImage2D(GL_TEXTURE_2D, 0, format, width.get(0), height.get(0), 0, format, GL_UNSIGNED_BYTE, image);
@@ -60,4 +69,30 @@ public class Texture {
     public void unbind() {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((filepath == null) ? 0 : filepath.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Texture other = (Texture) obj;
+        if (filepath == null) {
+            if (other.filepath != null)
+                return false;
+        } else if (!filepath.equals(other.filepath))
+            return false;
+        return true;
+    }
+    
 }

@@ -9,6 +9,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
+import static org.lwjgl.glfw.GLFW.glfwGetTime;
+import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
@@ -30,9 +33,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-
-import snake.util.Time;
 
 public class Window {
     private static Window instance = null;
@@ -69,13 +71,13 @@ public class Window {
     float r, g, b, a;
 
     private Window() {
-        this.width = 1600;
-        this.heigth = 900;
+        this.width=640;
+        this.heigth=480;
         this.title = "online snake";
-        this.a = 1.0f;
-        this.b = 1.0f;
-        this.g = 1.0f;
-        this.r = 1.0f;
+        this.a = 0.0f;
+        this.b = 0.0f;
+        this.g = 0.0f;
+        this.r = 0.0f;
     }
 
     public void run() {
@@ -95,8 +97,8 @@ public class Window {
     }
 
     public void loop() {
-        float beginTime = Time.getTime();
-        float lastTime = Time.getTime();
+        float beginTime = ((float)glfwGetTime());
+        float lastTime = ((float)glfwGetTime());
         float dt = -1;
 
         while (!glfwWindowShouldClose(glfwWindow)) {
@@ -107,7 +109,7 @@ public class Window {
                 currentScene.update(dt);
             }
             glfwSwapBuffers(glfwWindow);
-            lastTime = Time.getTime();
+            lastTime = ((float)glfwGetTime());
             dt = lastTime - beginTime;
             beginTime = lastTime;
         }
@@ -122,6 +124,11 @@ public class Window {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+        GLFWVidMode vidMode=glfwGetVideoMode(glfwGetPrimaryMonitor());
+        if (vidMode!=null) {
+            this.width=vidMode.width();
+            this.heigth=vidMode.height();
+        }
         glfwWindow = glfwCreateWindow(this.width, this.heigth, this.title, NULL, NULL);
         if (glfwWindow == NULL) {
             throw new IllegalStateException("failed to create window");

@@ -1,12 +1,12 @@
 package snake.engine;
 
 import org.joml.Vector2f;
-import org.joml.Vector4f;
 
+import snake.components.Sprite;
 import snake.components.SpriteRenderer;
+import snake.util.AssetPool;
 
 public class LevelEditorScene extends Scene {
-
 
     public LevelEditorScene() {
         super();
@@ -14,29 +14,28 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void init() {
-        this.camera=new Camera(new Vector2f());
-        int xOffset=0;
-        int yOffset=0;
+        loadResources();
 
-        float totalWidth=(float)(1600-xOffset*2);
-        float totalHeight=(float)(900-yOffset*2);
-        float sizeX=totalWidth/100.0f;
-        float sizeY=totalHeight/100.0f;
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 100; j++) {
-                float xPos=xOffset+(i*sizeX);
-                float yPos=yOffset+(j*sizeY);
-                GameObject gObject = new GameObject("obj"+i+""+j,new Transform(new Vector2f(xPos, yPos),new Vector2f(sizeX, sizeY)));
-                gObject.addComponent(new SpriteRenderer(new Vector4f(xPos/totalWidth, yPos/totalHeight, 1, 1)));
-                this.addGameObjectToScene(gObject);
-            }
-        }
+        this.camera = new Camera(new Vector2f());
+
+        SpriteSheet sprites=AssetPool.getSpriteSheet("./app/assets/spritesheet.png");
+        GameObject mario = new GameObject("mario", new Transform(new Vector2f(100, 100), new Vector2f(500, 500)));
+        mario.addComponent(new SpriteRenderer(sprites.getSprite(0)));
+        this.addGameObjectToScene(mario);
+
+        GameObject gomba = new GameObject("gomba", new Transform(new Vector2f(200, 100), new Vector2f(50, 50)));
+        gomba.addComponent(new SpriteRenderer(sprites.getSprite(15)));
+        this.addGameObjectToScene(gomba);
     }
 
+    private void loadResources() {
+        AssetPool.getShader("./app/assets/default.glsl");
+        AssetPool.addSpriteSheet("./app/assets/spritesheet.png",
+                new SpriteSheet(AssetPool.getTexture("./app/assets/spritesheet.png"), 16, 16, 26, 0));
+    }
 
     @Override
     public void update(float dt) {
-        System.out.println("fps:"+(1.0f/dt));
         this.gameObjects.forEach(go -> go.update(dt));
         this.renderer.render();
     }

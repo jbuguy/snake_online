@@ -19,6 +19,7 @@ import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform1i;
+import static org.lwjgl.opengl.GL20.glUniform1iv;
 import static org.lwjgl.opengl.GL20.glUniform4f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
@@ -154,5 +155,10 @@ public class Shader {
         int varlocation = glGetUniformLocation(shaderProgramID, varName);
         use();
         glUniform1i(varlocation, slot);
+    }
+    public void uploadIntArray(String varName,int[] array){
+        int varlocation = glGetUniformLocation(shaderProgramID, varName);
+        use();
+        glUniform1iv(varlocation, array);  
     }
 }

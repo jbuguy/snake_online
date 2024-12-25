@@ -12,7 +12,6 @@ public class LevelScene extends Scene {
 
     @Override
     public void init() {
-        // TODO Auto-generated method stub
         
     }
     

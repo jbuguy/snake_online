@@ -22,22 +22,25 @@ public class Renderer {
     }
 
     private void add(SpriteRenderer spr) {
-        boolean added= false;
-        for (RenderBatch batch: batchs) {
+        boolean added = false;
+        for (RenderBatch batch : batchs) {
             if (batch.hasRoom()) {
-                batch.addSprite(spr);
-                added=true;
-                break;
+                if (batch.hasTexture(spr.getTexture()) || batch.hasTextureRoom()) {
+                    batch.addSprite(spr);
+                    added = true;
+                    break;
+                }
             }
         }
         if (!added) {
-            RenderBatch batch=new RenderBatch(MAX_BATCH_SIZE);
+            RenderBatch batch = new RenderBatch(MAX_BATCH_SIZE);
             batch.start();
             batchs.add(batch);
             batch.addSprite(spr);
         }
     }
-    public void render(){
+
+    public void render() {
         batchs.forEach(RenderBatch::render);
     }
 }
