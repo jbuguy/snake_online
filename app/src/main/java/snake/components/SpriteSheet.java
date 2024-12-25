@@ -1,11 +1,10 @@
-package snake.engine;
+package snake.components;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.joml.Vector2f;
 
-import snake.components.Sprite;
 import snake.renderer.Texture;
 
 public class SpriteSheet {

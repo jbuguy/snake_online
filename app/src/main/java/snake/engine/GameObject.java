@@ -53,7 +53,7 @@ public class GameObject {
 
     public void addComponent(Component component) {
         this.components.add(component);
-        component.GameObject = this;
+        component.gameObject = this;
     }
 
     public void update(float dt) {

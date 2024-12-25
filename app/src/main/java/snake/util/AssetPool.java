@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import snake.engine.SpriteSheet;
+import snake.components.SpriteSheet;
 import snake.renderer.Shader;
 import snake.renderer.Texture;
 

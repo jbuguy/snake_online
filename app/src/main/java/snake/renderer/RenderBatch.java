@@ -89,8 +89,19 @@ public class RenderBatch {
     }
 
     public void render() {
-        glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
+        boolean rebuffer =false;
+        for (int i = 0; i < numSprites; i++) {
+            SpriteRenderer spr=sprites[i];
+            if(spr.isDirty()){
+                loadVertexProp(i);
+                spr.setClean();
+                rebuffer=true;  
+            }
+        }
+        if (rebuffer) {
+            glBindBuffer(GL_ARRAY_BUFFER, vboID);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
+        }
 
         shader.use();
         shader.uploadMat4f("uProjection", Window.getScene().getCamera().getProjectonMatrix());
@@ -147,7 +158,6 @@ public class RenderBatch {
                     break;
                 }
             }
-
         }
 
         float xadd = 1.0f;
@@ -167,9 +177,9 @@ public class RenderBatch {
                     break;
             }
             // vertex
-            vertices[offset] = sprite.GameObject.transform.position.x + (xadd * sprite.GameObject.transform.scale.x);
-            vertices[offset + 1] = sprite.GameObject.transform.position.y
-                    + (yadd * sprite.GameObject.transform.scale.y);
+            vertices[offset] = sprite.gameObject.transform.position.x + (xadd * sprite.gameObject.transform.scale.x);
+            vertices[offset + 1] = sprite.gameObject.transform.position.y
+                    + (yadd * sprite.gameObject.transform.scale.y);
             // color
             vertices[offset + 2] = color.x;
             vertices[offset + 3] = color.y;
