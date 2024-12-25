@@ -17,8 +17,9 @@ public class SpriteRenderer extends Component {
     public boolean isDirty() {
         return isDirty;
     }
-    public void setClean(){
-        this.isDirty=false;
+
+    public void setClean() {
+        this.isDirty = false;
     }
 
     public SpriteRenderer(Vector4f color) {

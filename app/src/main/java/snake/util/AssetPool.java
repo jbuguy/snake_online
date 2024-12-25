@@ -34,17 +34,19 @@ public class AssetPool {
         return texture;
 
     }
-    public static void addSpriteSheet(String filename,SpriteSheet spriteSheet){
-        File file=new File(filename);
+
+    public static void addSpriteSheet(String filename, SpriteSheet spriteSheet) {
+        File file = new File(filename);
         if (!AssetPool.spriteSheets.containsKey(file.getAbsolutePath())) {
             AssetPool.spriteSheets.put(file.getAbsolutePath(), spriteSheet);
         }
-    } 
-    public static SpriteSheet getSpriteSheet(String name){
-        File file=new File(name);
+    }
+
+    public static SpriteSheet getSpriteSheet(String name) {
+        File file = new File(name);
         if (!AssetPool.spriteSheets.containsKey(file.getAbsolutePath())) {
-            assert false:"Error: tried to access spriteSheet";
+            assert false : "Error: tried to access spriteSheet";
         }
-        return AssetPool.spriteSheets.getOrDefault(file.getAbsolutePath(),null);
+        return AssetPool.spriteSheets.getOrDefault(file.getAbsolutePath(), null);
     }
 }

@@ -15,7 +15,7 @@ public class SpriteSheet {
         this.sprites = new ArrayList<>();
         this.texture = texture;
         int currentX = 0;
-        int currentY = texture.getHeight() - spriteheight;
+        int currentY = 0;
         for (int i = 0; i < numSprite; i++) {
             float topY = (currentY + spriteheight) / ((float) texture.getHeight());
             float rightX = (currentX + spriteWidth) / ((float) texture.getWidth());
@@ -32,11 +32,12 @@ public class SpriteSheet {
             currentX += spriteWidth + spacing;
             if (currentX >= texture.getWidth()) {
                 currentX = 0;
-                currentY -= spriteheight + spacing;
+                currentY += spriteheight + spacing;
             }
         }
     }
-    public Sprite getSprite(int index){
+
+    public Sprite getSprite(int index) {
         return this.sprites.get(index);
     }
 }

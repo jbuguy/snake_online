@@ -25,7 +25,8 @@ import org.lwjgl.BufferUtils;
 public class Texture {
     private String filepath;
     private int textureID;
-    private int width,height;
+    private int width, height;
+
     public int getHeight() {
         return height;
     }
@@ -50,11 +51,12 @@ public class Texture {
 
         ByteBuffer image = stbi_load(filepath, width, height, channels, 0);
         if (image != null) {
-            int format = GL_RGBA; 
-            this.width=width.get(0);
-            this.height=height.get(0);
+            int format = GL_RGBA;
+            this.width = width.get(0);
+            this.height = height.get(0);
             if (channels.get(0) == 3) {
-                format = GL_RGB;             }
+                format = GL_RGB;
+            }
             glTexImage2D(GL_TEXTURE_2D, 0, format, width.get(0), height.get(0), 0, format, GL_UNSIGNED_BYTE, image);
         } else {
             assert false : "Error:(Texture) could not load image '" + this.filepath + "'";
@@ -94,5 +96,5 @@ public class Texture {
             return false;
         return true;
     }
-    
+
 }

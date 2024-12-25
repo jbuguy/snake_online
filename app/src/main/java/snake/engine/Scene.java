@@ -7,7 +7,7 @@ import snake.renderer.Renderer;
 
 public abstract class Scene {
     protected Camera camera;
-    protected Renderer renderer=new Renderer();
+    protected Renderer renderer = new Renderer();
     private boolean isRunning = false;
     protected List<GameObject> gameObjects = new ArrayList<>();
 
@@ -17,8 +17,8 @@ public abstract class Scene {
 
     public void start() {
         for (GameObject gameObject : gameObjects) {
-                gameObject.start();
-                renderer.add(gameObject);
+            gameObject.start();
+            renderer.add(gameObject);
         }
         isRunning = true;
     };

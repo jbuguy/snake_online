@@ -52,7 +52,7 @@ public class RenderBatch {
     private Shader shader;
 
     public RenderBatch(int maxBatchSize) {
-        shader = AssetPool.getShader("./app/assets/default.glsl");
+        shader = AssetPool.getShader("./assets/default.glsl");
         this.sprites = new SpriteRenderer[maxBatchSize];
         this.maxBatchSize = maxBatchSize;
 
@@ -89,13 +89,13 @@ public class RenderBatch {
     }
 
     public void render() {
-        boolean rebuffer =false;
+        boolean rebuffer = false;
         for (int i = 0; i < numSprites; i++) {
-            SpriteRenderer spr=sprites[i];
-            if(spr.isDirty()){
+            SpriteRenderer spr = sprites[i];
+            if (spr.isDirty()) {
                 loadVertexProp(i);
                 spr.setClean();
-                rebuffer=true;  
+                rebuffer = true;
             }
         }
         if (rebuffer) {
@@ -107,7 +107,7 @@ public class RenderBatch {
         shader.uploadMat4f("uProjection", Window.getScene().getCamera().getProjectonMatrix());
         shader.uploadMat4f("uView", Window.getScene().getCamera().getViewMatrix());
         for (int i = 0; i < textures.size(); i++) {
-            glActiveTexture(GL_TEXTURE0 + i+1);
+            glActiveTexture(GL_TEXTURE0 + i + 1);
             textures.get(i).bind();
         }
         shader.uploadIntArray("uTexture", texSlots);
@@ -138,10 +138,12 @@ public class RenderBatch {
     public boolean hasRoom() {
         return this.hasRoom;
     }
-    public boolean hasTextureRoom(){
-        return this.textures.size()<8;
+
+    public boolean hasTextureRoom() {
+        return this.textures.size() < 8;
     }
-    public boolean hasTexture(Texture texture){
+
+    public boolean hasTexture(Texture texture) {
         return this.textures.contains(texture);
     }
 
@@ -149,12 +151,12 @@ public class RenderBatch {
         SpriteRenderer sprite = this.sprites[index];
         int offset = index * 4 * VERTEX_SIZE;
         Vector4f color = sprite.getColor();
-        Vector2f[] textureCoords=sprite.getTexCoords();
+        Vector2f[] textureCoords = sprite.getTexCoords();
         int texId = 0;
         if (sprite.getTexture() != null) {
             for (int i = 0; i < textures.size(); i++) {
                 if (textures.get(i) == sprite.getTexture()) {
-                    texId = i+1;
+                    texId = i + 1;
                     break;
                 }
             }

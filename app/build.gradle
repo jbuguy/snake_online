@@ -11,7 +11,9 @@ plugins {
 }
 ext{
     lwjglVersion = '3.3.4'
-    lwjglPlatform="natives-linux"
+    lwjglPlatform="natives-" + (System.getProperty('os.name').toLowerCase().contains("win") ? "windows" : 
+                                 System.getProperty('os.name').toLowerCase().contains("mac") ? "macos" : 
+                                 "linux")
 }
 
 repositories {

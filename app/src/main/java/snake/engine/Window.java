@@ -71,8 +71,8 @@ public class Window {
     float r, g, b, a;
 
     private Window() {
-        this.width=640;
-        this.heigth=480;
+        this.width = 640;
+        this.heigth = 480;
         this.title = "online snake";
         this.a = 0.0f;
         this.b = 0.0f;
@@ -97,8 +97,8 @@ public class Window {
     }
 
     public void loop() {
-        float beginTime = ((float)glfwGetTime());
-        float lastTime = ((float)glfwGetTime());
+        float beginTime = ((float) glfwGetTime());
+        float lastTime = ((float) glfwGetTime());
         float dt = -1;
 
         while (!glfwWindowShouldClose(glfwWindow)) {
@@ -109,7 +109,7 @@ public class Window {
                 currentScene.update(dt);
             }
             glfwSwapBuffers(glfwWindow);
-            lastTime = ((float)glfwGetTime());
+            lastTime = ((float) glfwGetTime());
             dt = lastTime - beginTime;
             beginTime = lastTime;
         }
@@ -124,10 +124,10 @@ public class Window {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
-        GLFWVidMode vidMode=glfwGetVideoMode(glfwGetPrimaryMonitor());
-        if (vidMode!=null) {
-            this.width=vidMode.width();
-            this.heigth=vidMode.height();
+        GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        if (vidMode != null) {
+            this.width = vidMode.width();
+            this.heigth = vidMode.height();
         }
         glfwWindow = glfwCreateWindow(this.width, this.heigth, this.title, NULL, NULL);
         if (glfwWindow == NULL) {
@@ -145,7 +145,8 @@ public class Window {
         GL.createCapabilities();
         Window.changeScene(0);
     }
-    public static Scene getScene(){
+
+    public static Scene getScene() {
         return currentScene;
     }
 }

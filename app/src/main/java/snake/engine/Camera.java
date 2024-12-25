@@ -13,7 +13,7 @@ public class Camera {
         this.projectionMatrix = new Matrix4f();
         this.viewMatrix = new Matrix4f();
         adjustProjection();
-        
+
     }
 
     public void adjustProjection() {
