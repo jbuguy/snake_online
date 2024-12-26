@@ -1,24 +1,6 @@
 package snake.renderer;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import static org.lwjgl.opengl.GL11.glDrawElements;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
-import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glBufferSubData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
-import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import static org.lwjgl.opengl.GL30.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +12,7 @@ import snake.components.SpriteRenderer;
 import snake.engine.Window;
 import snake.util.AssetPool;
 
-public class RenderBatch {
+public class RenderBatch implements Comparable<RenderBatch>{
     private final int POS_SIZE = 2;
     private final int POS_OFFSET = 0;
     private final int TEXTURE_COORDS_SIZE = 2;
@@ -50,8 +32,9 @@ public class RenderBatch {
     private int vaoID, vboID;
     private int maxBatchSize;
     private Shader shader;
+    private int zIndex;
 
-    public RenderBatch(int maxBatchSize) {
+    public RenderBatch(int maxBatchSize, int zIndex) {
         shader = AssetPool.getShader("./assets/default.glsl");
         this.sprites = new SpriteRenderer[maxBatchSize];
         this.maxBatchSize = maxBatchSize;
@@ -60,6 +43,7 @@ public class RenderBatch {
         this.numSprites = 0;
         this.hasRoom = true;
         this.textures = new ArrayList<>();
+        this.zIndex = zIndex;
     }
 
     public void start() {
@@ -162,26 +146,30 @@ public class RenderBatch {
             }
         }
 
-        float xadd = 1.0f;
-        float yadd = 1.0f;
+        float xadd = 0.5f;
+        float yadd = 0.5f;
         for (int i = 0; i < 4; i++) {
             switch (i) {
                 case 1:
-                    yadd = 0.0f;
+                    yadd = -0.5f;
                     break;
                 case 2:
-                    xadd = 0.0f;
+                    xadd = -0.5f;
                     break;
                 case 3:
-                    yadd = 1.0f;
+                    yadd = 0.5f;
                     break;
                 default:
                     break;
             }
             // vertex
-            vertices[offset] = sprite.gameObject.transform.position.x + (xadd * sprite.gameObject.transform.scale.x);
+            float relX = xadd * sprite.gameObject.transform.scale.x;
+            float relY = yadd * sprite.gameObject.transform.scale.y;
+            vertices[offset] = sprite.gameObject.transform.position.x + relX * sprite.gameObject.transform.getCosAngle()
+                    - relY * sprite.gameObject.transform.getSinAngle();
             vertices[offset + 1] = sprite.gameObject.transform.position.y
-                    + (yadd * sprite.gameObject.transform.scale.y);
+                    + relX * sprite.gameObject.transform.getSinAngle()
+                    + relY * sprite.gameObject.transform.getCosAngle();
             // color
             vertices[offset + 2] = color.x;
             vertices[offset + 3] = color.y;
@@ -216,5 +204,15 @@ public class RenderBatch {
         elements[offsetArray + 3] = offset + 0;
         elements[offsetArray + 4] = offset + 2;
         elements[offsetArray + 5] = offset + 1;
+    }
+
+    public int getzIndex() {
+        return this.zIndex;
+    }
+
+
+    @Override
+    public int compareTo(RenderBatch o) {
+        return this.zIndex-o.zIndex;
     }
 }

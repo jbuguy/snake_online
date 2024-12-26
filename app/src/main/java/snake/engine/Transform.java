@@ -5,6 +5,8 @@ import org.joml.Vector2f;
 public class Transform {
     public Vector2f position;
     public Vector2f scale;
+    private float cosAngle = 1;
+    private float sinAngle = 0;
 
     public Transform() {
         init(new Vector2f(), new Vector2f());
@@ -16,6 +18,14 @@ public class Transform {
 
     public Transform(Vector2f position, Vector2f scale) {
         init(position, scale);
+    }
+
+    public float getCosAngle() {
+        return cosAngle;
+    }
+
+    public float getSinAngle() {
+        return sinAngle;
     }
 
     public void init(Vector2f position, Vector2f scale) {
@@ -41,6 +51,11 @@ public class Transform {
         return result;
     }
 
+    public void setAngle(float angle) {
+        this.cosAngle = (float) Math.cos(Math.toRadians((float) angle));
+        this.sinAngle = ((float) Math.sin((Math.toRadians((float) angle))));
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -50,7 +65,8 @@ public class Transform {
         if (getClass() != obj.getClass())
             return false;
         Transform other = (Transform) obj;
-        return position.equals(other.position) && scale.equals(other.scale);
+        return position.equals(other.position) && scale.equals(other.scale) && sinAngle == other.sinAngle
+                && cosAngle == other.cosAngle;
     }
 
 }

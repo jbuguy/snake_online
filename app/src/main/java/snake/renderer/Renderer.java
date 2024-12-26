@@ -1,6 +1,7 @@
 package snake.renderer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import snake.components.SpriteRenderer;
@@ -24,7 +25,7 @@ public class Renderer {
     private void add(SpriteRenderer spr) {
         boolean added = false;
         for (RenderBatch batch : batchs) {
-            if (batch.hasRoom()) {
+            if (batch.hasRoom()&& batch.getzIndex()==spr.gameObject.getzIndex()) {
                 if (batch.hasTexture(spr.getTexture()) || batch.hasTextureRoom()) {
                     batch.addSprite(spr);
                     added = true;
@@ -33,10 +34,11 @@ public class Renderer {
             }
         }
         if (!added) {
-            RenderBatch batch = new RenderBatch(MAX_BATCH_SIZE);
+            RenderBatch batch = new RenderBatch(MAX_BATCH_SIZE,spr.gameObject.getzIndex());
             batch.start();
             batchs.add(batch);
             batch.addSprite(spr);
+            Collections.sort(batchs);
         }
     }
 
