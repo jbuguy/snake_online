@@ -1,4 +1,4 @@
-package snake.engine;
+package snake.scenes;
 
 public class LevelScene extends Scene {
     public LevelScene() {

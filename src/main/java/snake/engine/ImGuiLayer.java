@@ -1,4 +1,4 @@
-package snake.engine.ImGui;
+package snake.engine;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -13,8 +13,7 @@ import imgui.flag.ImGuiConfigFlags;
 import imgui.flag.ImGuiKey;
 import imgui.flag.ImGuiMouseCursor;
 import imgui.gl3.ImGuiImplGl3;
-import snake.engine.Scene;
-import snake.engine.Window;
+import snake.scenes.Scene;
 
 public class ImGuiLayer {
     private long glfwWindow;

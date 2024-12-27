@@ -1,9 +1,11 @@
-package snake.engine;
+package snake.scenes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import imgui.ImGui;
+import snake.engine.Camera;
+import snake.engine.GameObject;
 import snake.renderer.Renderer;
 
 public abstract class Scene {
@@ -12,7 +14,7 @@ public abstract class Scene {
     private boolean isRunning = false;
     protected List<GameObject> gameObjects = new ArrayList<>();
     protected GameObject activeGameObject = null;
-
+    
     public abstract void init();
 
     public abstract void update(float dt);

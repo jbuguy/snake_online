@@ -3,6 +3,8 @@ package snake.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import snake.components.Component;
+
 public class GameObject {
     private String name;
     private List<Component> components;

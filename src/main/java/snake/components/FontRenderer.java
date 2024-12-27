@@ -1,7 +1,5 @@
 package snake.components;
 
-import snake.engine.Component;
-
 public class FontRenderer extends Component {
 
     @Override
