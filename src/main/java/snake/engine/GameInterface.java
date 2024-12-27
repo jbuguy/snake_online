@@ -2,6 +2,7 @@ package snake.engine;
 
 import org.joml.Vector2f;
 
+import imgui.ImGui;
 import snake.components.SpriteSheet;
 import snake.util.AssetPool;
 
@@ -19,14 +20,21 @@ public class GameInterface extends Scene {
     }
 
     private void loadResources() {
-        AssetPool.getShader("./assets/default.glsl");
-        AssetPool.addSpriteSheet("./assets/spritesheet.png",
-                new SpriteSheet(AssetPool.getTexture("./assets/spritesheet.png"), 16, 16, 26, 0));
+        AssetPool.getShader("./assets/shader/default.glsl");
+        AssetPool.addSpriteSheet("./assets/images/spritesheet.png",
+                new SpriteSheet(AssetPool.getTexture("./assets/images/spritesheet.png"), 16, 16, 26, 0));
     }
     @Override
     public void update(float dt) {
         this.gameObjects.forEach(go -> go.update(dt));
         this.renderer.render();
+    }
+
+    @Override
+    public void imgui() {
+        ImGui.begin("Test window");
+        ImGui.text("hello world");
+        ImGui.end();
     }
 
 }

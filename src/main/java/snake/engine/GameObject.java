@@ -62,6 +62,9 @@ public class GameObject {
         this.components.add(component);
         component.gameObject = this;
     }
+    public void imgui(){
+        components.forEach(Component::imgui);
+    }
 
     public void update(float dt) {
         components.forEach(c -> c.update(dt));

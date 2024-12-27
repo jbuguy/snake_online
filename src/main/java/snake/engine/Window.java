@@ -17,6 +17,8 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
+import snake.engine.ImGui.ImGuiLayer;
+
 public class Window {
     private static Window instance = null;
     private static Scene currentScene;
@@ -44,13 +46,31 @@ public class Window {
         return Window.instance;
     }
 
+    
+    public static Scene getScene() {
+        return currentScene;
+    }
+    
+    public static int getWidth() {
+        return get().width;
+    }
+    
+    public static int getHeight() {
+        return get().heigth;
+    }
+    public static void setWidth(int width){
+        get().width=width;
+    }
+    public static void setHight(int height){
+        get().heigth=height;
+    }
+    
     private int width, heigth;
+    private ImGuiLayer imGuiLayer;
     private String title;
-
     private long glfwWindow;
 
     float r, g, b, a;
-
     private Window() {
         this.width = 640;
         this.heigth = 480;
@@ -89,6 +109,7 @@ public class Window {
             if (dt > 0) {
                 currentScene.update(dt);
             }
+            this.imGuiLayer.update(dt,currentScene);
             glfwSwapBuffers(glfwWindow);
             lastTime = ((float) glfwGetTime());
             dt = lastTime - beginTime;
@@ -114,6 +135,11 @@ public class Window {
         if (glfwWindow == NULL) {
             throw new IllegalStateException("failed to create window");
         }
+        // resize callback
+        glfwSetWindowSizeCallback(glfwWindow, (window,newWidth,newHeight)->{
+            Window.setWidth(newWidth);
+            Window.setHight(newHeight);
+        });
         // mouse listener
         glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallBack);
         glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallBack);
@@ -123,13 +149,14 @@ public class Window {
         glfwMakeContextCurrent(glfwWindow);
         glfwSwapInterval(1);
         glfwShowWindow(glfwWindow);
+        
         GL.createCapabilities();
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-        Window.changeScene(0);
-    }
+        // ImGui
+        this.imGuiLayer=new ImGuiLayer(glfwWindow);
+        this.imGuiLayer.initImGui();
 
-    public static Scene getScene() {
-        return currentScene;
+        Window.changeScene(0);
     }
 }
