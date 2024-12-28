@@ -16,7 +16,8 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
-import snake.scenes.GameInterface;
+import snake.scenes.MainMenuScene;
+import snake.renderer.DrawLine;
 import snake.scenes.LevelScene;
 import snake.scenes.Scene;
 
@@ -27,7 +28,7 @@ public class Window {
     public static void changeScene(int scene) {
         switch (scene) {
             case 0:
-                currentScene = new GameInterface();
+                currentScene = new MainMenuScene();
                 break;
             case 1:
                 currentScene = new LevelScene();
@@ -56,7 +57,7 @@ public class Window {
     }
 
     public static int getHeight() {
-        return get().heigth;
+        return get().height;
     }
 
     public static void setWidth(int width) {
@@ -64,10 +65,10 @@ public class Window {
     }
 
     public static void setHight(int height) {
-        get().heigth = height;
+        get().height = height;
     }
 
-    private int width, heigth;
+    private int width, height;
     private ImGuiLayer imGuiLayer;
     private String title;
     private long glfwWindow;
@@ -76,12 +77,12 @@ public class Window {
 
     private Window() {
         this.width = 1920;
-        this.heigth = 1080;
+        this.height = 1080;
         this.title = "online snake";
-        this.a = 0.0f;
-        this.b = 0.0f;
-        this.g = 0.0f;
-        this.r = 0.0f;
+        this.r = 0.87f;
+        this.g = 0.92f;
+        this.b = 0.98f;
+        this.a = 1.0f;
     }
 
     public void run() {
@@ -91,7 +92,6 @@ public class Window {
         glfwSetKeyCallback(glfwWindow, null);
         glfwFreeCallbacks(glfwWindow);
         glfwDestroyWindow(glfwWindow);
-
         glfwTerminate();
         GLFWErrorCallback tmp = glfwSetErrorCallback(null);
         if (tmp != null) {
@@ -104,12 +104,14 @@ public class Window {
         float beginTime = ((float) glfwGetTime());
         float lastTime = ((float) glfwGetTime());
         float dt = -1;
-
+        
         while (!glfwWindowShouldClose(glfwWindow)) {
             glfwPollEvents();
+            DrawLine.beginFrame();
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);
             if (dt > 0) {
+                DrawLine.draw();
                 currentScene.update(dt);
             }
             this.imGuiLayer.update(dt, currentScene);
@@ -129,20 +131,19 @@ public class Window {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
-        glfwWindow = glfwCreateWindow(this.width, this.heigth, this.title, NULL, NULL);
+        glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
         if (glfwWindow == NULL) {
             throw new IllegalStateException("failed to create window");
         }
         // resize callback
         glfwSetWindowSizeCallback(glfwWindow, (window, newWidth, newHeight) -> {
-            System.out.println("width : " + newWidth + " height: " + newHeight);
             Window.setWidth(newWidth);
             Window.setHight(newHeight);
         });
         // mouse listener
-        glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallBack);
-        glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallBack);
-        glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallBack);
+        glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
+        glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+        glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
         // key listener
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallBack);
         glfwMakeContextCurrent(glfwWindow);
