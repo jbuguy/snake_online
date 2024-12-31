@@ -24,6 +24,10 @@ import org.lwjgl.BufferUtils;
 
 public class Texture {
     private String filepath;
+    public String getFilepath() {
+        return filepath;
+    }
+
     private int textureID;
     private int width, height;
 
