@@ -5,7 +5,10 @@ import org.joml.Vector2f;
 public class Transform {
     public Vector2f position;
     public Vector2f scale;
+    public float angle;
+    @Deprecated
     private float cosAngle = 1;
+    @Deprecated
     private float sinAngle = 0;
 
     public Transform() {
