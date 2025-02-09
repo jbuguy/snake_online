@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import snake.components.FontRenderer;
 import snake.components.SpriteRenderer;
 import snake.engine.GameObject;
 
@@ -19,6 +20,13 @@ public class Renderer {
         SpriteRenderer spr = gameObject.getComponent(SpriteRenderer.class);
         if (spr != null) {
             add(spr);
+        }
+        FontRenderer fontRenderer=gameObject.getComponent(FontRenderer.class);
+        if (fontRenderer != null) {
+            ArrayList<SpriteRenderer> sprites=fontRenderer.getSprites();
+            for (SpriteRenderer sprite: sprites) {
+                add(sprite);
+            }
         }
     }
 

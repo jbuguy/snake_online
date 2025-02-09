@@ -13,7 +13,11 @@ public class FontRenderer extends Component {
     private String text;
     private SpriteSheet spriteSheet;
 
-    private ArrayList<Sprite> sprites;
+    private ArrayList<SpriteRenderer> sprites;
+
+    public ArrayList<SpriteRenderer> getSprites() {
+        return sprites;
+    }
 
     public void setText(String text) {
         this.text = text;
@@ -53,9 +57,9 @@ public class FontRenderer extends Component {
         sprites.clear();
         for (char c : text.toCharArray()) {
             if (c == ' ') {
-                sprites.add(spriteSheet.getSprite(26));
+                sprites.add(new SpriteRenderer(spriteSheet.getSprite(26)));
             } else {
-                sprites.add(spriteSheet.getSprite(c - 'a'));
+                sprites.add(new SpriteRenderer(spriteSheet.getSprite(c - 'a')));
             }
         }
     }
