@@ -222,10 +222,10 @@ public class ImGuiLayer {
         imGuiGl3.renderDrawData(ImGui.getDrawData());
     }
 
-    private void destroyImGui() {
-        imGuiGl3.dispose();
-        ImGui.destroyContext();
-    }
+    // private void destroyImGui() {
+    //     imGuiGl3.dispose();
+    //     ImGui.destroyContext();
+    // }
 
     public void setUpDockSpace() {
         int windowFlags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;

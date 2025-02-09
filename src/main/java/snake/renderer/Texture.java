@@ -17,10 +17,12 @@ import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load;
 
+import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryUtil;
 
 public class Texture {
     private String filepath;
@@ -30,6 +32,7 @@ public class Texture {
     }
 
     private int textureID;
+
     public int getTextureID() {
         return textureID;
     }
@@ -42,6 +45,41 @@ public class Texture {
 
     public int getWidth() {
         return width;
+    }
+
+    public Texture(String name, BufferedImage image) {
+        this.filepath = name;
+        textureID = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, textureID);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        ByteBuffer imageBuffer = bufferedImageToByteBuffer(image);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.getWidth(), image.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                imageBuffer);
+
+    }
+
+    private ByteBuffer bufferedImageToByteBuffer(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        ByteBuffer buffer = MemoryUtil.memAlloc(width * height * 4); 
+
+        int[] pixels = new int[width * height];
+        image.getRGB(0, 0, width, height, pixels, 0, width);
+
+        for (int i = 0; i < pixels.length; i++) {
+            int pixel = pixels[i];
+            buffer.put((byte) ((pixel >> 16) & 0xFF)); 
+            buffer.put((byte) ((pixel >> 8) & 0xFF));  
+            buffer.put((byte) (pixel & 0xFF));         
+            buffer.put((byte) ((pixel >> 24) & 0xFF)); 
+        }
+        buffer.flip();
+        return buffer;
     }
 
     public Texture(String filepath) {

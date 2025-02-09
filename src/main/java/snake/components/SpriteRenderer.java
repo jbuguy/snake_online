@@ -12,12 +12,12 @@ import snake.util.AssetPool;
 public class SpriteRenderer extends Component {
     private Vector4f color;
     private Shader shader;
+    private Sprite sprite;
+    private Transform lastTransform;
     public Shader getShader() {
         return shader;
     }
 
-    private Sprite sprite;
-    private Transform lastTransform;
     private boolean isDirty = true;
 
     public boolean isDirty() {
