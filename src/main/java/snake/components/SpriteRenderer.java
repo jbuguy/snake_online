@@ -5,10 +5,16 @@ import org.joml.Vector4f;
 
 import imgui.ImGui;
 import snake.engine.Transform;
+import snake.renderer.Shader;
 import snake.renderer.Texture;
+import snake.util.AssetPool;
 
 public class SpriteRenderer extends Component {
     private Vector4f color;
+    private Shader shader;
+    public Shader getShader() {
+        return shader;
+    }
 
     private Sprite sprite;
     private Transform lastTransform;
@@ -22,8 +28,16 @@ public class SpriteRenderer extends Component {
         this.isDirty = false;
     }
 
+    
+    public SpriteRenderer(Vector4f color, Shader shader) {
+        this.shader=shader;
+        this.color = color;
+        this.shader = shader;
+        this.sprite=new Sprite(null);
+    }
 
     public SpriteRenderer(Vector4f color) {
+        this.shader=AssetPool.getShader("./assets/shader/default.glsl");
         this.color = color;
         this.sprite = new Sprite(null);
     }
@@ -35,6 +49,9 @@ public class SpriteRenderer extends Component {
 
     public Texture getTexture() {
         return sprite.getTexture();
+    }
+    public void setTexture(Texture texture){
+        this.sprite.setTexture(texture);
     }
 
     public Vector4f getColor() {

@@ -24,11 +24,16 @@ import org.lwjgl.BufferUtils;
 
 public class Texture {
     private String filepath;
+
     public String getFilepath() {
         return filepath;
     }
 
     private int textureID;
+    public int getTextureID() {
+        return textureID;
+    }
+
     private int width, height;
 
     public int getHeight() {
@@ -66,6 +71,22 @@ public class Texture {
             assert false : "Error:(Texture) could not load image '" + this.filepath + "'";
         }
         stbi_image_free(image);
+    }
+
+    public Texture() {
+        this.textureID = -1;
+        this.height = -1;
+        this.width = -1;
+
+    }
+
+    public Texture(int width, int height) {
+        this.filepath = "generated";
+        textureID = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, textureID);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+
     }
 
     public void bind() {

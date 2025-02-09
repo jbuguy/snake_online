@@ -11,18 +11,20 @@ uniform mat4 uView;
 
 out vec4 fColor;
 out vec2 fTexCoords;
+out vec2 fPos;
 out float fTexId;
 
 void main() {
     fColor = aColor;
     fTexCoords = aTexCoords;
+    fPos=aPos.xy;
     fTexId = aTexId;
     gl_Position = uProjection * uView * vec4(aPos, 1.0);
 }
 
 #type fragment
 #version 330 core
-
+in vec2 fPos;
 in vec4 fColor;
 in vec2 fTexCoords;
 in float fTexId;
@@ -52,3 +54,4 @@ void main() {
     }
 
 }
+

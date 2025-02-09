@@ -17,7 +17,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
 import snake.scenes.MainMenuScene;
-import snake.renderer.DrawLine;
+import snake.renderer.DrawShape;
 import snake.scenes.LevelScene;
 import snake.scenes.Scene;
 
@@ -60,16 +60,15 @@ public class Window {
         return get().height;
     }
 
-    public static void setWidth(int width) {
-        get().width = width;
+    public static void setWidth(int newWidth) {
+        get().width = newWidth;
     }
 
-    public static void setHight(int height) {
-        get().height = height;
+    public static void setHeight(int newHeight) {
+        get().height = newHeight;
     }
 
     private int width, height;
-    private ImGuiLayer imGuiLayer;
     private String title;
     private long glfwWindow;
 
@@ -85,11 +84,15 @@ public class Window {
         this.a = 1.0f;
     }
 
+    public void name() {
+        glfwSetWindowShouldClose(GLFW_NO_WINDOW_CONTEXT, true);
+    }
+
     public void run() {
         System.out.println("hello lwjgl " + Version.getVersion() + "!");
         init();
+
         loop();
-        glfwSetKeyCallback(glfwWindow, null);
         glfwFreeCallbacks(glfwWindow);
         glfwDestroyWindow(glfwWindow);
         glfwTerminate();
@@ -104,17 +107,16 @@ public class Window {
         float beginTime = ((float) glfwGetTime());
         float lastTime = ((float) glfwGetTime());
         float dt = -1;
-        
+
         while (!glfwWindowShouldClose(glfwWindow)) {
             glfwPollEvents();
-            DrawLine.beginFrame();
+            DrawShape.beginFrame();
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);
             if (dt > 0) {
-                DrawLine.draw();
+                DrawShape.draw();
                 currentScene.update(dt);
             }
-            this.imGuiLayer.update(dt, currentScene);
             glfwSwapBuffers(glfwWindow);
             lastTime = ((float) glfwGetTime());
             dt = lastTime - beginTime;
@@ -135,27 +137,25 @@ public class Window {
         if (glfwWindow == NULL) {
             throw new IllegalStateException("failed to create window");
         }
-        // resize callback
-        glfwSetWindowSizeCallback(glfwWindow, (window, newWidth, newHeight) -> {
-            Window.setWidth(newWidth);
-            Window.setHight(newHeight);
-        });
         // mouse listener
         glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
         glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
         glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
         // key listener
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallBack);
+        // resize callback
+        glfwSetWindowSizeCallback(glfwWindow, (window, newWidth, newHeight) -> {
+            Window.setWidth(newWidth);
+            Window.setHeight(newHeight);
+        });
         glfwMakeContextCurrent(glfwWindow);
-        glfwSwapInterval(1);
+        glfwSwapInterval(0);
         glfwShowWindow(glfwWindow);
 
         GL.createCapabilities();
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
         // ImGui
-        this.imGuiLayer = new ImGuiLayer(glfwWindow);
-        this.imGuiLayer.initImGui();
 
         Window.changeScene(0);
     }

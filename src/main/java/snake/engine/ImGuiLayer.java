@@ -9,10 +9,14 @@ import imgui.ImGuiIO;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
 import imgui.flag.ImGuiBackendFlags;
+import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.flag.ImGuiKey;
 import imgui.flag.ImGuiMouseCursor;
+import imgui.flag.ImGuiStyleVar;
+import imgui.flag.ImGuiWindowFlags;
 import imgui.gl3.ImGuiImplGl3;
+import imgui.type.ImBoolean;
 import snake.scenes.Scene;
 
 public class ImGuiLayer {
@@ -35,6 +39,7 @@ public class ImGuiLayer {
 
         io.setIniFilename("imgui.ini"); // We don't want to save .ini file
         io.setConfigFlags(ImGuiConfigFlags.NavEnableKeyboard); // Navigation with keyboard
+        io.setConfigFlags(ImGuiConfigFlags.DockingEnable);
         io.setBackendFlags(ImGuiBackendFlags.HasMouseCursors); // Mouse cursors to display while resizing windows etc.
         io.setBackendPlatformName("imgui_java_impl_glfw");
 
@@ -153,21 +158,20 @@ public class ImGuiLayer {
         final ImFontAtlas fontAtlas = io.getFonts();
         final ImFontConfig fontConfig = new ImFontConfig(); // Natively allocated
         // object, should be explicitly destroyed
-        
+
         // Glyphs could be added per-font as well as per config used globally like
         // here
         fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesDefault());
-        
+
         // Add a default font, which is 'ProggyClean.ttf, 13px'
-        
+
         // Fonts merge example
         fontConfig.setPixelSnapH(true);
-        
-        fontAtlas.addFontFromFileTTF("assets/fonts/Segoe UI.ttf", 24,fontConfig);
-        
+
+        fontAtlas.addFontFromFileTTF("assets/fonts/Segoe UI.ttf", 24, fontConfig);
+
         fontConfig.setPixelSnapH(false);
-        
-        
+
         fontConfig.destroy(); // After all fonts were added we don't need this config
         // more
         //
@@ -185,10 +189,12 @@ public class ImGuiLayer {
 
     public void update(float dt, Scene currentScene) {
         startFrame(dt);
-        // any dear imgui should go between  ImGui.newFrame() and  ImGui.render() methods
+        // any dear imgui should go between ImGui.newFrame() and ImGui.render() methods
         ImGui.newFrame();
+        setUpDockSpace();
         currentScene.sceneImgui();
         ImGui.showDemoWindow();
+        ImGui.end();
         ImGui.render();
         endFrame();
     }
@@ -219,5 +225,18 @@ public class ImGuiLayer {
     private void destroyImGui() {
         imGuiGl3.dispose();
         ImGui.destroyContext();
+    }
+
+    public void setUpDockSpace() {
+        int windowFlags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
+        ImGui.setNextWindowPos(0.0f, 0.0f, ImGuiCond.Always);
+        ImGui.setNextWindowSize(Window.getWidth(), Window.getHeight());
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0.0f);
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowBorderSize, 0.0f);
+        windowFlags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize
+                | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
+        ImGui.begin("doc space",new ImBoolean(true),windowFlags);
+        ImGui.popStyleVar(2);
+        ImGui.dockSpace(ImGui.getID("dockspace"));
     }
 }

@@ -25,9 +25,10 @@ import org.joml.Vector3f;
 
 import snake.engine.Window;
 import snake.util.AssetPool;
+import snake.util.JMath;
 
-public class DrawLine {
-      private static int MAX_LINES = 500;
+public class DrawShape {
+    private static int MAX_LINES = 500;
 
     private static List<Line2D> lines = new ArrayList<>();
     // 6 floats per vertex, 2 vertices per line
@@ -66,7 +67,7 @@ public class DrawLine {
         }
 
         // Remove dead lines
-        for (int i=0; i < lines.size(); i++) {
+        for (int i = 0; i < lines.size(); i++) {
             if (lines.get(i).beginFrame() < 0) {
                 lines.remove(i);
                 i--;
@@ -74,13 +75,13 @@ public class DrawLine {
         }
     }
 
-
     public static void draw() {
-        if (lines.size() <= 0) return;
+        if (lines.size() <= 0)
+            return;
 
         int index = 0;
         for (Line2D line : lines) {
-            for (int i=0; i < 2; i++) {
+            for (int i = 0; i < 2; i++) {
                 Vector2f position = i == 0 ? line.getFrom() : line.getTo();
                 Vector3f color = line.getColor();
 
@@ -135,7 +136,43 @@ public class DrawLine {
     }
 
     public static void addLine2D(Vector2f from, Vector2f to, Vector3f color, int lifetime) {
-        if (lines.size() >= MAX_LINES) return;
-        DrawLine.lines.add(new Line2D(from, to, color, lifetime));
+        if (lines.size() >= MAX_LINES)
+            return;
+        DrawShape.lines.add(new Line2D(from, to, color, lifetime));
     }
+
+    public static void addBox2D(Vector2f center, Vector2f dim, float rotation, Vector3f color, int lifetime) {
+        Vector2f min = new Vector2f(center).sub(new Vector2f(dim).mul(0.5f));
+        Vector2f max = new Vector2f(center).add(new Vector2f(dim).mul(0.5f));
+        Vector2f[] vertices = {
+                new Vector2f(min.x, min.y),
+                new Vector2f(min.x, max.y),
+                new Vector2f(max.x, max.y),
+                new Vector2f(max.x, min.y) };
+        if (rotation != 0.0f) {
+            for (Vector2f vertex : vertices) {
+                JMath.rotate(vertex, rotation, center);
+            }
+        }
+        addLine2D(vertices[0], vertices[1], color, lifetime);
+        addLine2D(vertices[1], vertices[2], color, lifetime);
+        addLine2D(vertices[2], vertices[3], color, lifetime);
+        addLine2D(vertices[3], vertices[0], color, lifetime);
+    }
+    public static void addCircle2D(Vector2f center,float radius,Vector3f color,int lifetime){
+        Vector2f[] points=new Vector2f[20];
+        int currentAngle=0;
+        int inc=360/points.length;
+        for (int i = 0; i < points.length; i++) {
+            Vector2f tmp=new Vector2f(0,radius);
+            JMath.rotate(tmp, currentAngle, new Vector2f());
+            points[i]=new Vector2f(tmp).add(center);
+            if(i>0){
+                addLine2D(points[i-1], points[i],color,lifetime);
+            }
+            currentAngle+=inc;
+        }
+        addLine2D(points[points.length-1], points[0]);
+    }
+
 }

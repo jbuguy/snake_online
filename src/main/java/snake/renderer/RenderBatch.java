@@ -63,6 +63,18 @@ public class RenderBatch implements Comparable<RenderBatch>{
         this.zIndex = zIndex;
     }
 
+    public RenderBatch(int maxBatchSize, int zIndex, Shader shader) {
+            this.shader = shader;
+            this.sprites = new SpriteRenderer[maxBatchSize];
+            this.maxBatchSize = maxBatchSize;
+    
+            this.vertices = new float[maxBatchSize * 4 * VERTEX_SIZE];
+            this.numSprites = 0;
+            this.hasRoom = true;
+            this.textures = new ArrayList<>();
+            this.zIndex = zIndex;
+          }
+
     public void start() {
         // create and bind vertex array object
         vaoID = glGenVertexArrays();
@@ -147,7 +159,9 @@ public class RenderBatch implements Comparable<RenderBatch>{
     public boolean hasTexture(Texture texture) {
         return this.textures.contains(texture);
     }
-
+    public boolean hasShader(Shader shader){
+        return this.shader.equals(shader);
+    }
     private void loadVertexProp(int index) {
         SpriteRenderer sprite = this.sprites[index];
         int offset = index * 4 * VERTEX_SIZE;
@@ -156,7 +170,7 @@ public class RenderBatch implements Comparable<RenderBatch>{
         int texId = 0;
         if (sprite.getTexture() != null) {
             for (int i = 0; i < textures.size(); i++) {
-                if (textures.get(i) == sprite.getTexture()) {
+                if (textures.get(i).equals(sprite.getTexture()) ) {
                     texId = i + 1;
                     break;
                 }

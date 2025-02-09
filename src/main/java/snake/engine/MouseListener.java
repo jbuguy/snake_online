@@ -11,7 +11,7 @@ public class MouseListener {
     private double xPos, yPos, lastY, lastX;
     private boolean mouseButtonPressed[] = new boolean[9];
     private boolean isDragging;
-
+    // TODO: fix the window getwidth and height
     private MouseListener() {
         this.scrollX = 0.0;
         this.scrollY = 0.0;
@@ -72,7 +72,7 @@ public class MouseListener {
 
     public static float getOrthoX() {
         float currentX = getX();
-        currentX = (currentX / (float) Window.getWidth()) * 2.0f - 1.0f;
+        currentX = (currentX / (float) 1920) * 2.0f - 1.0f;
         Vector4f tmp = new Vector4f(currentX, 0, 0, 1);
         tmp.mul(Window.getScene().getCamera().getInverseProjection()).mul(Window.getScene().getCamera().getInverseView());
         currentX = tmp.x;
@@ -82,7 +82,7 @@ public class MouseListener {
 
     public static float getOrthoY() {
         float currentY = Window.getHeight() - getY();
-        currentY = (currentY / (float) Window.getHeight()) * 2.0f - 1.0f;
+        currentY = (currentY / (float) 1080) * 2.0f - 1.0f;
         Vector4f tmp = new Vector4f(0, currentY, 0, 1);
         tmp.mul(Window.getScene().getCamera().getInverseProjection()).mul(Window.getScene().getCamera().getInverseView());
         currentY = tmp.y;
